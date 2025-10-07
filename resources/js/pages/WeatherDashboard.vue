@@ -33,13 +33,22 @@ const breadcrumbs = [
 const loading = ref(false);
 const weatherData = ref<any[]>([]);
 const statistics = ref<any[]>([]);
+const pagination = ref({
+    total: 0,
+    per_page: 50,
+    current_page: 1,
+    last_page: 1,
+    from: 0,
+    to: 0,
+});
 const filters = ref({
     start_date: '',
     end_date: '',
     station_id: '',
     region: '',
     country: '',
-    limit: 100,
+    page: 1,
+    per_page: 50,
 });
 
 // Computed
@@ -62,6 +71,9 @@ const fetchWeatherData = async () => {
 
         if (dataResponse.data.success) {
             weatherData.value = dataResponse.data.data;
+            if (dataResponse.data.pagination) {
+                pagination.value = dataResponse.data.pagination;
+            }
         }
 
         if (statsResponse.data.success) {
@@ -75,7 +87,18 @@ const fetchWeatherData = async () => {
 };
 
 const handleFilterChange = (newFilters: any) => {
-    filters.value = { ...filters.value, ...newFilters };
+    filters.value = { ...filters.value, ...newFilters, page: 1 }; // Reset to page 1 on filter change
+    fetchWeatherData();
+};
+
+const handlePageChange = (page: number) => {
+    filters.value.page = page;
+    fetchWeatherData();
+};
+
+const handlePerPageChange = (perPage: number) => {
+    filters.value.per_page = perPage;
+    filters.value.page = 1; // Reset to page 1
     fetchWeatherData();
 };
 
@@ -86,7 +109,8 @@ const handleReset = () => {
         station_id: '',
         region: '',
         country: '',
-        limit: 100,
+        page: 1,
+        per_page: 50,
     };
     fetchWeatherData();
 };
@@ -98,11 +122,11 @@ onMounted(() => {
         const endDate = new Date(props.dateRange.max_date);
         const startDate = new Date(endDate);
         startDate.setDate(startDate.getDate() - 30);
-        
+
         filters.value.end_date = endDate.toISOString().split('T')[0];
         filters.value.start_date = startDate.toISOString().split('T')[0];
     }
-    
+
     fetchWeatherData();
 });
 </script>
@@ -151,6 +175,67 @@ onMounted(() => {
                 :data="weatherData"
                 :loading="loading"
             />
+
+            <!-- Pagination -->
+            <div
+                v-if="hasData && pagination.total > 0"
+                class="flex flex-col gap-4 rounded-xl border bg-card p-6 sm:flex-row sm:items-center sm:justify-between"
+            >
+                <!-- Pagination Info -->
+                <div class="text-sm text-muted-foreground">
+                    Showing {{ pagination.from }} to {{ pagination.to }} of {{ pagination.total }} results
+                </div>
+
+                <!-- Per Page Selector -->
+                <div class="flex items-center gap-2">
+                    <label class="text-sm text-muted-foreground">Per page:</label>
+                    <select
+                        :value="filters.per_page"
+                        @change="handlePerPageChange(Number(($event.target as HTMLSelectElement).value))"
+                        class="rounded-md border border-input bg-background px-3 py-1.5 text-sm"
+                    >
+                        <option :value="10">10</option>
+                        <option :value="25">25</option>
+                        <option :value="50">50</option>
+                        <option :value="100">100</option>
+                    </select>
+                </div>
+
+                <!-- Pagination Buttons -->
+                <div class="flex items-center gap-2">
+                    <button
+                        @click="handlePageChange(1)"
+                        :disabled="pagination.current_page === 1"
+                        class="rounded-md border border-input bg-background px-3 py-1.5 text-sm hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        First
+                    </button>
+                    <button
+                        @click="handlePageChange(pagination.current_page - 1)"
+                        :disabled="pagination.current_page === 1"
+                        class="rounded-md border border-input bg-background px-3 py-1.5 text-sm hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Previous
+                    </button>
+                    <span class="px-3 py-1.5 text-sm">
+                        Page {{ pagination.current_page }} of {{ pagination.last_page }}
+                    </span>
+                    <button
+                        @click="handlePageChange(pagination.current_page + 1)"
+                        :disabled="pagination.current_page === pagination.last_page"
+                        class="rounded-md border border-input bg-background px-3 py-1.5 text-sm hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Next
+                    </button>
+                    <button
+                        @click="handlePageChange(pagination.last_page)"
+                        :disabled="pagination.current_page === pagination.last_page"
+                        class="rounded-md border border-input bg-background px-3 py-1.5 text-sm hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Last
+                    </button>
+                </div>
+            </div>
 
             <!-- Empty State -->
             <div

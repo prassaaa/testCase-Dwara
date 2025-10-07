@@ -48,7 +48,7 @@ class ClickHouseService
     public function getWeatherData(array $filters = []): array
     {
         try {
-            $query = "SELECT 
+            $query = "SELECT
                 station_id,
                 date,
                 tempAvg / 10.0 AS temp_avg_celsius,
@@ -103,11 +103,20 @@ class ClickHouseService
                 $query .= " WHERE " . implode(' AND ', $conditions);
             }
 
-            $query .= " ORDER BY date DESC";
+            $query .= " ORDER BY date DESC, station_id ASC";
 
-            // Add limit
-            $limit = $filters['limit'] ?? 100;
-            $query .= " LIMIT {$limit}";
+            // Pagination
+            $page = $filters['page'] ?? 1;
+            $perPage = $filters['per_page'] ?? 50;
+            $offset = ($page - 1) * $perPage;
+
+            // Get total count first
+            $countQuery = "SELECT count() as total FROM ({$query}) as subquery";
+            $countStatement = $this->client->select($countQuery, $params);
+            $total = $countStatement->rows()[0]['total'] ?? 0;
+
+            // Add pagination to main query
+            $query .= " LIMIT {$perPage} OFFSET {$offset}";
 
             $statement = $this->client->select($query, $params);
 
@@ -115,6 +124,14 @@ class ClickHouseService
                 'success' => true,
                 'data' => $statement->rows(),
                 'count' => $statement->count(),
+                'pagination' => [
+                    'total' => $total,
+                    'per_page' => $perPage,
+                    'current_page' => $page,
+                    'last_page' => ceil($total / $perPage),
+                    'from' => $offset + 1,
+                    'to' => min($offset + $perPage, $total),
+                ],
             ];
         } catch (\Exception $e) {
             Log::error('ClickHouse query failed: ' . $e->getMessage());
@@ -136,7 +153,7 @@ class ClickHouseService
     public function getWeatherStatistics(array $filters = []): array
     {
         try {
-            $query = "SELECT 
+            $query = "SELECT
                 name AS station_name,
                 count() AS total_measurements,
                 avg(tempAvg / 10.0) AS avg_temperature,
@@ -198,7 +215,7 @@ class ClickHouseService
     public function getAvailableStations(): array
     {
         try {
-            $query = "SELECT DISTINCT 
+            $query = "SELECT DISTINCT
                 station_id,
                 name AS station_name,
                 substring(station_id, 1, 2) AS country_code,
@@ -233,7 +250,7 @@ class ClickHouseService
     public function getDateRange(): array
     {
         try {
-            $query = "SELECT 
+            $query = "SELECT
                 min(date) AS min_date,
                 max(date) AS max_date
             FROM {$this->database}.noaa";

@@ -42,7 +42,8 @@ class WeatherDashboardController extends Controller
             'station_id' => 'nullable|string',
             'region' => 'nullable|string',
             'country' => 'nullable|string|size:2',
-            'limit' => 'nullable|integer|min:1|max:1000',
+            'page' => 'nullable|integer|min:1',
+            'per_page' => 'nullable|integer|min:10|max:100',
         ]);
 
         $data = $this->clickHouseService->getWeatherData($validated);
@@ -85,8 +86,8 @@ class WeatherDashboardController extends Controller
 
         return response()->json([
             'success' => $isConnected,
-            'message' => $isConnected 
-                ? 'ClickHouse connection successful' 
+            'message' => $isConnected
+                ? 'ClickHouse connection successful'
                 : 'ClickHouse connection failed',
         ]);
     }

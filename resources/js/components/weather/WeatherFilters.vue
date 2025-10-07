@@ -17,7 +17,8 @@ interface Props {
         station_id: string;
         region: string;
         country: string;
-        limit: number;
+        page: number;
+        per_page: number;
     };
     loading: boolean;
 }
@@ -59,7 +60,7 @@ const countries = ref<Array<{ code: string; name: string }>>([
 <template>
     <div class="rounded-xl border bg-card p-4">
         <h2 class="mb-4 text-lg font-semibold">Filters</h2>
-        
+
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <!-- Start Date -->
             <div class="space-y-2">
@@ -168,7 +169,7 @@ const countries = ref<Array<{ code: string; name: string }>>([
                 </svg>
                 Apply Filters
             </button>
-            
+
             <button
                 type="button"
                 class="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
