@@ -2,6 +2,24 @@
 
 Dashboard cuaca interaktif terintegrasi dengan Laravel Vue Starter Kit, menggunakan ClickHouse untuk query data NOAA Global Historical Climatology Network.
 
+## 📸 Screenshots
+
+### Main Dashboard
+![Main Dashboard](images/dashboard1.png)
+*Dashboard utama dengan weather summary cards dan recent data*
+
+### Weather Dashboard - Overview
+![Weather Dashboard Overview](images/dashboard2.png)
+*Weather Dashboard dengan filters, statistics cards, dan charts*
+
+### Weather Dashboard - Data Table
+![Weather Dashboard Table](images/dashboard3.png)
+*Detailed data table dengan weather measurements*
+
+### Weather Dashboard - Charts
+![Weather Dashboard Charts](images/dashboard4.png)
+*Interactive temperature dan precipitation charts*
+
 ## 🚀 Tech Stack
 
 - **Backend**: Laravel 12
@@ -12,8 +30,27 @@ Dashboard cuaca interaktif terintegrasi dengan Laravel Vue Starter Kit, mengguna
 
 ## 📋 Features
 
+### 🎨 Main Dashboard (Screenshot 1)
+✅ **Weather Summary Cards**
+- Average Temperature (last 7 days)
+- Temperature Range (Max/Min)
+- Total Precipitation
+- Active Stations
+
+✅ **Recent Weather Data**
+- 5 latest measurements
+- Quick overview per station
+
+✅ **Quick Actions**
+- Link to full Weather Dashboard
+- NOAA Documentation
+- ClickHouse Playground
+
+### ☁️ Weather Dashboard (Screenshots 2-4)
+
 ✅ **Filter berdasarkan Periode**
 - Date range picker untuk memilih rentang tanggal
+- Data dari 1 Januari 2025 - 7 Oktober 2025 (280 hari)
 - Default: 30 hari terakhir
 
 ✅ **Filter berdasarkan Wilayah**
@@ -24,10 +61,13 @@ Dashboard cuaca interaktif terintegrasi dengan Laravel Vue Starter Kit, mengguna
 - 📊 Statistics Cards (Total Measurements, Avg/Max/Min Temperature, Precipitation)
 - 📈 Interactive Charts (Temperature & Precipitation trends)
 - 📋 Data Table dengan detail lengkap
+- 🎨 Color-coded temperatures (red for max, blue for min)
+- 🌤️ Weather icons (☀️ Normal, 🌧️ Rain, ❄️ Snow)
 
 ✅ **Real-time Query**
 - Query super cepat dengan ClickHouse
 - Agregasi data dalam milliseconds
+- 1,400 rows data (5 stations × 280 days)
 
 ## 🛠️ Installation
 
@@ -93,19 +133,19 @@ php artisan serve
 
 Weather Dashboard sudah **terintegrasi penuh** dengan Laravel Vue Starter Kit:
 
-### **Main Dashboard** (`/dashboard`)
+### **Main Dashboard** (`/dashboard`) - 📸 *See Screenshot 1*
 - ✅ Weather summary cards (Avg Temp, Temp Range, Precipitation, Active Stations)
 - ✅ Recent weather data (last 5 measurements)
 - ✅ Quick actions (links to Weather Dashboard, NOAA docs, ClickHouse playground)
 - ✅ Real-time data dari ClickHouse
 - ✅ Requires authentication
 
-### **Weather Dashboard** (`/weather`)
+### **Weather Dashboard** (`/weather`) - 📸 *See Screenshots 2-4*
 - ✅ Full weather analytics page
-- ✅ Advanced filters (date range, country, station)
-- ✅ Interactive charts (temperature & precipitation trends)
-- ✅ Detailed data table
-- ✅ Statistics cards
+- ✅ Advanced filters (date range, country, station) - *Screenshot 2*
+- ✅ Interactive charts (temperature & precipitation trends) - *Screenshot 4*
+- ✅ Detailed data table - *Screenshot 3*
+- ✅ Statistics cards - *Screenshot 2*
 - ✅ Requires authentication
 
 ### **Navigation**
@@ -115,19 +155,27 @@ Weather Dashboard sudah **terintegrasi penuh** dengan Laravel Vue Starter Kit:
 
 ## 📊 Sample Data
 
-Project ini sudah include sample data dari 5 kota:
-- 🇮🇩 Jakarta, Indonesia
-- 🇺🇸 New York, USA
-- 🇯🇵 Tokyo, Japan
-- 🇬🇧 London, UK
-- 🇦🇺 Sydney, Australia
+Project ini sudah include sample data dari 5 kota untuk **tahun 2025**:
 
-Data mencakup 30 hari terakhir dengan measurements:
-- Temperature (Avg, Max, Min)
-- Precipitation
-- Weather Type
-- Wind Speed
-- Snow data (untuk kota dengan salju)
+| Station | Country | Data Period | Total Days | Avg Temp |
+|---------|---------|-------------|------------|----------|
+| 🇮🇩 Jakarta Observatory | Indonesia | Jan 1 - Oct 7, 2025 | 280 | 28.2°C |
+| 🇺🇸 New York Central Park | USA | Jan 1 - Oct 7, 2025 | 280 | 1.7°C |
+| 🇯🇵 Tokyo | Japan | Jan 1 - Oct 7, 2025 | 280 | 8.1°C |
+| 🇬🇧 London Heathrow | UK | Jan 1 - Oct 7, 2025 | 280 | 5.8°C |
+| 🇦🇺 Sydney Observatory Hill | Australia | Jan 1 - Oct 7, 2025 | 280 | 24.7°C |
+
+**Total: 1,400 rows** (5 stations × 280 days)
+
+### Data Measurements:
+- 🌡️ Temperature (Avg, Max, Min) in °C
+- 💧 Precipitation in mm
+- 🌤️ Weather Type (Normal, Rain, Snow)
+- 💨 Wind Speed (Average & Max)
+- ❄️ Snow data (untuk kota dengan salju)
+- 📍 GPS Coordinates & Elevation
+
+*Data dapat dilihat di Screenshots 2-4*
 
 ## 🔧 ClickHouse Management
 
@@ -272,7 +320,26 @@ docker-compose down -v
 docker-compose up -d
 ```
 
-## 📚 Resources
+## � Visual Guide
+
+### Dashboard Flow
+
+1. **Login Page** → Login dengan credentials Anda
+2. **Main Dashboard** (Screenshot 1) → Lihat weather summary & recent data
+3. **Weather Dashboard** (Screenshot 2) → Apply filters (date, country, station)
+4. **View Charts** (Screenshot 4) → Analyze temperature & precipitation trends
+5. **View Data Table** (Screenshot 3) → Explore detailed measurements
+
+### Screenshot Details
+
+| Screenshot | Page | Features Shown |
+|------------|------|----------------|
+| **dashboard1.png** | Main Dashboard | Summary cards, Recent data, Quick actions |
+| **dashboard2.png** | Weather Dashboard | Filters, Statistics cards, Overview |
+| **dashboard3.png** | Weather Dashboard | Detailed data table with measurements |
+| **dashboard4.png** | Weather Dashboard | Interactive temperature & precipitation charts |
+
+## �📚 Resources
 
 - [ClickHouse Documentation](https://clickhouse.com/docs)
 - [NOAA GHCN Dataset](https://clickhouse.com/docs/getting-started/example-datasets/noaa)
