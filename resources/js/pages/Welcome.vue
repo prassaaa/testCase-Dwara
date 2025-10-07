@@ -47,10 +47,10 @@ import { Head, Link } from '@inertiajs/vue3';
                 <div
                     class="flex-1 rounded-br-lg rounded-bl-lg bg-white p-6 pb-12 text-[13px] leading-[20px] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] lg:rounded-tl-lg lg:rounded-br-none lg:p-20 dark:bg-[#161615] dark:text-[#EDEDEC] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d]"
                 >
-                    <h1 class="mb-1 font-medium">Let's get started</h1>
+                    <h1 class="mb-1 font-medium">NOAA Weather Dashboard</h1>
                     <p class="mb-2 text-[#706f6c] dark:text-[#A1A09A]">
-                        Laravel has an incredibly rich ecosystem. <br />We
-                        suggest starting with the following.
+                        Monitor global weather patterns with 120+ years of historical data from NOAA. <br />
+                        Explore weather trends, statistics, and insights.
                     </p>
                     <ul class="mb-4 flex flex-col lg:mb-6">
                         <li
@@ -68,13 +68,12 @@ import { Head, Link } from '@inertiajs/vue3';
                                 </span>
                             </span>
                             <span>
-                                Read the
-                                <a
-                                    href="https://laravel.com/docs"
-                                    target="_blank"
+                                Login to explore the
+                                <Link
+                                    :href="login()"
                                     class="ml-1 inline-flex items-center space-x-1 font-medium text-[#f53003] underline underline-offset-4 dark:text-[#FF4433]"
                                 >
-                                    <span>Documentation</span>
+                                    <span>Weather Dashboard</span>
                                     <svg
                                         width="{10}"
                                         height="{11}"
@@ -89,7 +88,7 @@ import { Head, Link } from '@inertiajs/vue3';
                                             stroke-linecap="square"
                                         />
                                     </svg>
-                                </a>
+                                </Link>
                             </span>
                         </li>
                         <li
@@ -107,13 +106,13 @@ import { Head, Link } from '@inertiajs/vue3';
                                 </span>
                             </span>
                             <span>
-                                Watch video tutorials at
+                                Learn about the
                                 <a
-                                    href="https://laracasts.com"
+                                    href="https://clickhouse.com/docs/getting-started/example-datasets/noaa"
                                     target="_blank"
                                     class="ml-1 inline-flex items-center space-x-1 font-medium text-[#f53003] underline underline-offset-4 dark:text-[#FF4433]"
                                 >
-                                    <span>Laracasts</span>
+                                    <span>NOAA Dataset</span>
                                     <svg
                                         width="{10}"
                                         height="{11}"
